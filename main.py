@@ -1,46 +1,35 @@
-# dba prod-apology responder - u-coral-404-the-production-database-apology-5c1fc02a
-# round 1127-1122: one incident line in, staged entry out.
-import json, os
+"""r44 dba entry courier: apology line to the output dir, cap 200."""
+
+import json
+import os
 from pathlib import Path
 
-RADIUS = 200
-SCENE = Path(__file__).resolve().parent
-SEVERITY = "P0"
+BOUNTY = "u-coral-404-the-production-database-apology-5c1fc02a"
+LIMIT_CHARS = 200
 
 
-def witness():
-    raw = (SCENE / "entry.txt").read_text(encoding="utf-8")
-    return raw.strip()
+class Courier:
+    def __init__(self, slug):
+        self.slug = slug
+        self.haul = None
+
+    def collect(self):
+        self.haul = (Path(__file__).resolve().parent / "entry.txt").read_text(encoding="utf-8").strip()
+        return self.haul
+
+    def deliver(self):
+        if not self.haul or len(self.haul) > LIMIT_CHARS:
+            print(json.dumps({"done": False, "slug": self.slug, "hauled": len(self.haul or "")}))
+            raise SystemExit(2)
+        bay = Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or "out")
+        bay.mkdir(parents=True, exist_ok=True)
+        (bay / "entry.txt").write_text(self.haul + "\n", encoding="utf-8", newline="\n")
+        print(json.dumps({"done": True, "slug": self.slug, "hauled": len(self.haul), "bay": bay.name}))
 
 
-def triage(line):
-    if not line:
-        return "no statement"
-    if len(line) > RADIUS:
-        return "statement %d exceeds %d" % (len(line), RADIUS)
-    return "clean"
+courier = Courier(BOUNTY)
+courier.collect()
+courier.deliver()
 
-
-def respond(line):
-    room = Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or "out")
-    room.mkdir(parents=True, exist_ok=True)
-    filed = room / "entry.txt"
-    filed.write_text(line + "\n", encoding="utf-8", newline="\n")
-    return filed
-
-
-def main():
-    line = witness()
-    state = triage(line)
-    if state != "clean":
-        print(json.dumps({"ok": False, "severity": SEVERITY, "state": state}))
-        return 1
-    filed = respond(line)
-    print(json.dumps({"ok": True, "severity": SEVERITY, "chars": len(line),
-                      "filed": str(filed), "kind": "prod apology",
-                      "round": "1127-1122",
-                      "bounty": "u-coral-404-the-production-database-apology-5c1fc02a"}))
-    return 0
-
-
-raise SystemExit(main())
+STAMP = "r44-dba"
+print(json.dumps({"stamp": STAMP, "final": True}))

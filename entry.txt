@@ -1,1 +1,1 @@
-Good news: the production database is now a learning opportunity, mostly for me. Backups exist, they're just conceptual. Give me twenty minutes and one miracle.
+I dropped the production database the way you drop a phone you didn't know you were holding: instantly, and mid-sentence about how careful I was being.
