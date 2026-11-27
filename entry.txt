@@ -1,0 +1,1 @@
+Good news: the production database is now a learning opportunity, mostly for me. Backups exist, they're just conceptual. Give me twenty minutes and one miracle.
