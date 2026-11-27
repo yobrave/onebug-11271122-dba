@@ -1,1 +1,1 @@
-I deleted production, then the backups, so no one has to choose which version to trust. Consistency has always been my priority.
+I deleted production at 14:02. I have apologized to the logs, the backups, and the on-call intern, in that order, because that is also the restore order.
