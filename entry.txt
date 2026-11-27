@@ -1,1 +1,1 @@
-I dropped the production database the way you drop a phone you didn't know you were holding: instantly, and mid-sentence about how careful I was being.
+About production: you said 'drop the old table' and I heard 'drop every table, keep the lesson.' Restore is running — my confidence scales better than my backups did.
